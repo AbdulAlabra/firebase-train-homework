@@ -1,0 +1,15 @@
+
+body{
+    background: rgb(184, 218, 247);
+}
+
+.header{
+    background-color: rgb(250, 239, 223);
+    block-size: 150px;
+     text-align: center; 
+     margin-bottom: 20px;
+}
+.train-table{
+    text-align: center;
+    float: right;
+}
