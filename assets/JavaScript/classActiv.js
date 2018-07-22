@@ -21,8 +21,8 @@ $(".btn").on("click", function (event) {
 
     //this will display the time chosen in this format(1..12 am or pm) 
     var display_time_format = moment(moment(randomTime, randomFormat)).format("h:mm:a");
-console.log(display_time_format);
-    //this if statement will check if the difference is nagtive or not. Note "nagtive number means in the future" 
+    console.log(display_time_format);
+    //this if statement will check if the difference is nagtive or not. Note "nagtive number means today before 11;59;pm" 
     if (time_difference < 0) {
         // so if it's nagtive then the time is right, and save it to the database.
         var postive_number = Math.abs(time_difference);
@@ -35,16 +35,33 @@ console.log(display_time_format);
             timeToArrive: postive_number,
             Frequency: $(".Frequency").val().trim()
         });
+
+    }
+
+    else if (time_difference > 0) {
+        //so if it's not nagtive, this means that you are choosing a time for tomorrow
+
+        //because moment thinks that you are choosing time for yesterday, we have to make formula to return the diffrance in time in the 'future' not the past. 
+        var postive_number = Math.abs(time_difference - 1440);
+
+        database.ref().push({
+
+            trainName: $(".trainName").val().trim(),
+            Destination: $(".Destination").val().trim(),
+            time: display_time_format,
+            timeToArrive: postive_number,
+            Frequency: $(".Frequency").val().trim()
+        });
     }
 
     else {
-        alert("time chosen is invalid! Choose another time");
+        alert("you must choose a time!");
     }
-
 });
 
+
 function success1(snapshot) {
-// appending the new user input to the page
+    // appending the new user input to the page
     var newRow = $("<tr>").append(
         $("<td>").text(snapshot.val().trainName),
         $("<td>").text(snapshot.val().Destination),
